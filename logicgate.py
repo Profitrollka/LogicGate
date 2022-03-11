@@ -23,10 +23,12 @@ class LogicGate:
 		return self.name
 
 	def get_output(self):
-		self.output = get_logic_gate()
+		self.output = self.get_logic_gate()
 		return self.output	
 
+
 class UnaryGate(LogicGate):
+
 
 	"""
 	The UnaryGate class represents logic elements with one input line.
@@ -37,14 +39,23 @@ class UnaryGate(LogicGate):
 
 		self.pin = None
 
+
 	def get_pin(self):
 		if self.pin == None:
-			return int(input('Enter Pin input for gate ' + self.get_name() + '-->'))
+			pin_input = input(f'Enter Pin input for gate {self.get_name()} -->')
+			if pin_input in ('0','1'):
+				return int(pin_input)
+			else:
+				while pin_input not in ('0','1'):
+					print('Pin must be 0 or 1')
+					pin_input = input(f'Enter Pin input for gate {self.get_name()} -->')
+				return int(pin_input)	
+
 		else:
 			return self.pin.get_from_gate().get_output()
 
 	def set_next_pin(self, source):
-		if self.pin is None:
+		if self.pin == None:
 			self.pin = source
 		else:
 			print('Cannot Connect: NO EMPTY PINS on this gate')
@@ -63,7 +74,7 @@ class NotGate(UnaryGate):
 
 
 	def get_logic_gate(self):
-		if self.pin == 1:
+		if self.get_pin():
 			return 0
 		else:
 			return 1
@@ -80,23 +91,39 @@ class BinaryGate(LogicGate):
 		self.pinA = None
 		self.pinB = None
 
+
 	def get_pinA(self):
-		if self.pinA is None:
-			return int(input('Enter Pin A input for gate ' + self.get_name() + '-->'))
+		if self.pinA == None:
+			pin_input = input(f'Enter Pin A input for gate {self.get_name()} -->')
+			if pin_input in ('0','1'):
+				return int(pin_input)
+			else:
+				while pin_input not in ('0','1'):
+					print('Pin must be 0 or 1')
+					pin_input = input(f'Enter Pin A input for gate {self.get_name()}-->')
+				return int(pin_input)
 		else:
 			return self.pinA.get_from_gate().get_output()
 
+
 	def get_pinB(self):
-		if self.pinB is None:
-			return int(input('Enter Pin B input for gate ' + self.get_name() + '-->'))
+		if self.pinB == None:
+			pin_input = input(f'Enter Pin B input for gate {self.get_name()} -->')
+			if pin_input in ('0','1'):
+				return int(pin_input)
+			else:
+				while pin_input not in ('0','1'):
+					print('Pin must be 0 or 1')
+					pin_input = input(f'Enter Pin B input for gate {self.get_name()} -->')
+				return int(pin_input)
 		else:
 			return self.pinB.get_from_gate().get_output()
 
 	def set_next_pin(self, source):
-		if self.pinA is None:
+		if self.pinA == None:
 			self.pinA = source
 		else:
-			if self.pinB is None:
+			if self.pinB == None:
 				self.pinB = source
 			else:
 		 		print('Cannot Connect: NO EMPTY PINS on this gate')
@@ -242,5 +269,3 @@ class Connector:
 
 	def get_to_gate(self):
 		return self.to_gate
-
-
